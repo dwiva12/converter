@@ -1,0 +1,116 @@
+<resources>
+    <string name="app_name">Converter+</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string-array name="quantity_array">
+        <item>Length</item>
+        <item>Area</item>
+        <item>Volume</item>
+        <item>Mass</item>
+        <item>Time</item>
+        <item>Temperature</item>
+        <item>Speed</item>
+        <item>Energy</item>
+        <item>Power</item>
+        <item>Pressure</item>
+        <item>Data</item>
+    </string-array>
+
+    <string-array name="length_array">
+        <item>nanometer</item>
+        <item>micrometer</item>
+        <item>milimeter</item>
+        <item>centimeter</item>
+        <item>meter</item>
+        <item>kilometer</item>
+        <item>inch</item>
+        <item>mile</item>
+    </string-array>
+
+    <string-array name="area_array">
+        <item>def</item>
+        <item>def</item>
+        <item>def</item>
+    </string-array>
+
+    <string-array name="volume_array">
+        <item>def</item>
+        <item>def</item>
+        <item>def</item>
+    </string-array>
+
+    <string-array name="mass_array">
+        <item>microgram</item>
+        <item>miligram</item>
+        <item>gram</item>
+        <item>kilogram</item>
+        <item>ton</item>
+        <item>lb</item>
+        <item>oz</item>
+    </string-array>
+
+    <string-array name="time_array">
+        <item>def</item>
+        <item>def</item>
+        <item>def</item>
+    </string-array>
+
+    <string-array name="temperature_array">
+        <item>celsius</item>
+        <item>fahrenheit</item>
+        <item>kelvin</item>
+        <item>reamur</item>
+    </string-array>
+
+    <string-array name="speed_array">
+        <item>def</item>
+        <item>def</item>
+        <item>def</item>
+    </string-array>
+
+    <string-array name="energy_array">
+        <item>def</item>
+        <item>def</item>
+        <item>def</item>
+    </string-array>
+
+    <string-array name="power_array">
+        <item>def</item>
+        <item>def</item>
+        <item>def</item>
+    </string-array>
+
+    <string-array name="pressure_array">
+        <item>pascal</item>
+        <item>atmosphere</item>
+        <item>bar</item>
+        <item>torr</item>
+    </string-array>
+
+    <string-array name="data_array">
+        <item>bit</item>
+        <item>byte</item>
+        <item>kilobit</item>
+        <item>kilobyte</item>
+        <item>megabit</item>
+        <item>megabyte</item>
+        <item>gigabit</item>
+        <item>gigabyte</item>
+        <item>terabit</item>
+        <item>terabyte</item>
+        <item>petabit</item>
+        <item>petabyte</item>
+    </string-array>
+
+    <string-array name="default_array">
+        <item>def1</item>
+        <item>def2</item>
+        <item>def3</item>
+    </string-array>
+
+    <string-array name="bunga_array">
+        <item>Bunga tetap</item>
+        <item>Bunga menurun</item>
+    </string-array>
+</resources>
