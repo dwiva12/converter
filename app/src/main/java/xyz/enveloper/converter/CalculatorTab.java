@@ -25,7 +25,9 @@ public class CalculatorTab extends Fragment{
     private Button btnCe, btnDelete, btnDot;
     private Button btnDivide, btnMultiply, btnPlus, btnMinus;
 
-    private Double input, result;
+    String input;
+    private Double result;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,33 +100,109 @@ public class CalculatorTab extends Fragment{
             }
         });
 
-        /*btnPlusMinus.setOnClickListener(new View.OnClickListener() {
+        btnDivide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Button btn = (Button) rootView.findViewById(v.getId());
+                String operator = btn.getText().toString();
                 String inputBuf = tvInput.getText().toString();
-                if (!inputBuf.equals("0")) {
-                    Double in = Double.parseDouble(inputBuf);
-                    DecimalFormat df = new DecimalFormat("0");
-                    df.setMaximumFractionDigits(12); //12 = DecimalFormat.DOUBLE_FRACTION_DIGITS
-                    tvInput.setText("" + (df.format(in * -1)));
 
+                if (!inputBuf.equals("")) {
+                    char last = inputBuf.charAt(inputBuf.length()-1);
+                    if (last >= '0' && last <= '9') {
+                        inputBuf = inputBuf + operator;
+                    }
+                    else {
+                        char last2 = inputBuf.charAt(inputBuf.length()-2);
+                        if (!(last2 >= '0' && last2 <= '9')) {
+                            inputBuf = inputBuf.substring(0, inputBuf.length() - 2) + operator;
+                        } else {
+                            inputBuf = inputBuf.substring(0, inputBuf.length() - 1) + operator;
+                        }
+                    }
+                    tvInput.setText(inputBuf);
                 }
             }
-        });*/
-        btnDivide.setOnClickListener(new OperatorOnClickListener());
-        btnMultiply.setOnClickListener(new OperatorOnClickListener());
-        btnPlus.setOnClickListener(new OperatorOnClickListener());
-        btnMinus.setOnClickListener(new OperatorOnClickListener());
-//        Toast.makeText(this.getContext(), "OnStart Finish", Toast.LENGTH_LONG).show();
-    }
+        });
 
-    public class OperatorOnClickListener extends Activity implements AdapterView.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Button btn = (Button) rootView.findViewById(v.getId());
-            String value = btn.getText().toString();
-            setInput(value);
-        }
+        btnMultiply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button btn = (Button) rootView.findViewById(v.getId());
+                String operator = btn.getText().toString();
+                String inputBuf = tvInput.getText().toString();
+
+                if (!inputBuf.equals("")) {
+                    char last = inputBuf.charAt(inputBuf.length()-1);
+                    if (last >= '0' && last <= '9') {
+                        inputBuf = inputBuf + operator;
+                    }
+                    else {
+                        char last2 = inputBuf.charAt(inputBuf.length()-2);
+                        if (!(last2 >= '0' && last2 <= '9')) {
+                            inputBuf = inputBuf.substring(0, inputBuf.length() - 2) + operator;
+                        } else {
+                            inputBuf = inputBuf.substring(0, inputBuf.length() - 1) + operator;
+                        }
+                    }
+                    tvInput.setText(inputBuf);
+                }
+            }
+        });
+
+        btnPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button btn = (Button) rootView.findViewById(v.getId());
+                String operator = btn.getText().toString();
+                String inputBuf = tvInput.getText().toString();
+
+                if (!inputBuf.equals("")) {
+                    char last = inputBuf.charAt(inputBuf.length()-1);
+                    if (last >= '0' && last <= '9') {
+                        inputBuf = inputBuf + operator;
+                    }
+                    else {
+                        char last2 = inputBuf.charAt(inputBuf.length()-2);
+                        if (!(last2 >= '0' && last2 <= '9')) {
+                            inputBuf = inputBuf.substring(0, inputBuf.length() - 2) + operator;
+                        } else {
+                            inputBuf = inputBuf.substring(0, inputBuf.length() - 1) + operator;
+                        }
+                    }
+                    tvInput.setText(inputBuf);
+                }
+            }
+        });
+
+        btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button btn = (Button) rootView.findViewById(v.getId());
+                String operator = btn.getText().toString();
+                String inputBuf = tvInput.getText().toString();
+                btn = (Button) rootView.findViewById(R.id.btn_plus);
+                String  plus = btn.getText().toString();
+                btn = (Button) rootView.findViewById(R.id.btn_minus);
+                String  minus = btn.getText().toString();
+
+                if (inputBuf.equals("")) {
+                    inputBuf = inputBuf + operator;
+                }
+                else {
+                    String c = "" + inputBuf.charAt(inputBuf.length()-1);
+                    if ( !(c.equals(minus)) && !(c.equals(plus)) ) {
+                        inputBuf = inputBuf + operator;
+                    }
+                    else {
+                        inputBuf = inputBuf.substring(0, inputBuf.length() - 1) + operator;
+                    }
+                }
+
+                tvInput.setText(inputBuf);
+            }
+        });
+//        Toast.makeText(this.getContext(), "OnStart Finish", Toast.LENGTH_LONG).show();
     }
 
     public class NumberOnClickListener extends Activity implements AdapterView.OnClickListener {
