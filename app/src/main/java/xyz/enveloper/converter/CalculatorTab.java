@@ -2,6 +2,7 @@ package xyz.enveloper.converter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -106,6 +107,7 @@ public class CalculatorTab extends Fragment{
             public void onClick(View v) {
                 tvInput.setText("");
                 tvResult.setText("");
+                result = 0d;
             }
         });
 
@@ -114,8 +116,26 @@ public class CalculatorTab extends Fragment{
             public void onClick(View v) {
                 String inputBuf = tvInput.getText().toString();
                 if (inputBuf.length() > 0) {
-                    inputBuf = inputBuf.substring(0, inputBuf.length() - 1);
-                    tvInput.setText(inputBuf);
+                    if (!fromResult) {
+                        inputBuf = inputBuf.substring(0, inputBuf.length() - 1);
+                        tvInput.setText(inputBuf);
+                        if (!inputBuf.equals("")){
+                            if ( !(inputBuf.charAt(inputBuf.length()-1) == '−') ) {
+                                System.out.println("The Hell" + inputBuf.charAt(inputBuf.length()-1));
+                                calculate();
+                            }
+                        }
+                        else {
+                            tvInput.setText("");
+                            tvResult.setText("");
+                            result = 0d;
+                        }
+                    }
+                    else {
+                        tvInput.setText("");
+                        result = 0d;
+                    }
+
                 }
             }
         });
@@ -217,6 +237,7 @@ public class CalculatorTab extends Fragment{
                     String c = "" + inputBuf.charAt(inputBuf.length()-1);
                     if ( !(c.equals(minus)) && !(c.equals(plus)) ) {
                         inputBuf = inputBuf + operator;
+                        fromResult = false;
                     }
                     else {
                         inputBuf = inputBuf.substring(0, inputBuf.length() - 1) + operator;
@@ -230,19 +251,21 @@ public class CalculatorTab extends Fragment{
         btnEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DecimalFormat df = new DecimalFormat("0");
-                df.setMaximumFractionDigits(10); //12 = DecimalFormat.DOUBLE_FRACTION_DIGITS
-                String r = "" + (df.format(result));
+                if (!fromResult && !(tvInput.getText().toString().equals("")) ) {
+                    DecimalFormat df = new DecimalFormat("0");
+                    df.setMaximumFractionDigits(10); //12 = DecimalFormat.DOUBLE_FRACTION_DIGITS
+                    String r = "" + (df.format(result));
 
-                if (r.length() < 12) {
-                    tvInput.setText(r);
-                }
-                else {
-                    tvInput.setText(result.toString());
-                }
+                    if (r.length() < 12) {
+                        tvInput.setText(r);
+                    }
+                    else {
+                        tvInput.setText(result.toString());
+                    }
 
-                tvResult.setText("");
-                fromResult = true;
+                    tvResult.setText("");
+                    fromResult = true;
+                }
             }
         });
 //        Toast.makeText(this.getContext(), "OnStart Finish", Toast.LENGTH_LONG).show();
@@ -264,6 +287,7 @@ public class CalculatorTab extends Fragment{
         if (inputBuf.equals("0") || fromResult) {
             if (value.equals("0")) {
                 tvInput.setText("0");
+                fromResult = false;
             }
             else {
                 tvInput.setText(value);
@@ -279,14 +303,24 @@ public class CalculatorTab extends Fragment{
 
     private void calculate() {
         String input = tvInput.getText().toString();
-        input = input.replace('×', '*');
-        input = input.replace('÷', '/');
-        input = input.replace('+', '+');
-        input = input.replace('−', '-');
-        System.out.println(input);
+        if (!input.equals("")) {
+            if (!input.equals("−")) {
+                input = input.replace('×', '*');
+                input = input.replace('÷', '/');
+                input = input.replace('+', '+');
+                input = input.replace('−', '-');
+                System.out.println(input);
 
-        result = calculator.calculate(input);
-        showResult();
+                result = calculator.calculate(input);
+                showResult();
+            }
+            else {
+                tvResult.setText("");
+            }
+        }
+        else {
+            tvResult.setText("");
+        }
     }
 
     private void showResult() {
