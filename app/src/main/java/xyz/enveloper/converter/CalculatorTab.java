@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by dwiva on 5/18/17.
@@ -23,10 +26,13 @@ public class CalculatorTab extends Fragment{
 
     private Button btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
     private Button btnCe, btnDelete, btnDot;
-    private Button btnDivide, btnMultiply, btnPlus, btnMinus;
+    private Button btnDivide, btnMultiply, btnPlus, btnMinus, btnEqual;
 
     String input;
     private Double result;
+    private boolean fromResult = false;
+
+    Calculator calculator = new Calculator();
 
     @Nullable
     @Override
@@ -49,6 +55,7 @@ public class CalculatorTab extends Fragment{
         btnMultiply = (Button) rootView.findViewById(R.id.btn_multiply);
         btnPlus = (Button) rootView.findViewById(R.id.btn_plus);
         btnMinus = (Button) rootView.findViewById(R.id.btn_minus);
+        btnEqual = (Button) rootView.findViewById(R.id.btn_equal);
 
         tvInput = (TextView) rootView.findViewById(R.id.input);
         tvResult = (TextView) rootView.findViewById(R.id.output);
@@ -74,7 +81,20 @@ public class CalculatorTab extends Fragment{
             @Override
             public void onClick(View v) {
                 String inputBuf = tvInput.getText().toString();
-                if (!inputBuf.contains(".")) {
+                String num = "";
+
+                for (int i = inputBuf.length()-1; i >= 0; i--) {
+                    char current = inputBuf.charAt(i);
+
+                    if ( !(current >= '0' && current <= '9') ) {
+                        int start = i-1;
+                        num = inputBuf.substring(start, inputBuf.length());
+                        System.out.println(i + ".." + start + ".." + num);
+                        break;
+                    }
+                }
+
+                if (!num.contains(".")) {
                     inputBuf = inputBuf + ".";
                     tvInput.setText(inputBuf);
                 }
@@ -111,8 +131,9 @@ public class CalculatorTab extends Fragment{
                     char last = inputBuf.charAt(inputBuf.length()-1);
                     if (last >= '0' && last <= '9') {
                         inputBuf = inputBuf + operator;
+                        fromResult = false;
                     }
-                    else {
+                    else if (inputBuf.length() != 1) {
                         char last2 = inputBuf.charAt(inputBuf.length()-2);
                         if (!(last2 >= '0' && last2 <= '9')) {
                             inputBuf = inputBuf.substring(0, inputBuf.length() - 2) + operator;
@@ -136,8 +157,9 @@ public class CalculatorTab extends Fragment{
                     char last = inputBuf.charAt(inputBuf.length()-1);
                     if (last >= '0' && last <= '9') {
                         inputBuf = inputBuf + operator;
+                        fromResult = false;
                     }
-                    else {
+                    else if (inputBuf.length() != 1){
                         char last2 = inputBuf.charAt(inputBuf.length()-2);
                         if (!(last2 >= '0' && last2 <= '9')) {
                             inputBuf = inputBuf.substring(0, inputBuf.length() - 2) + operator;
@@ -161,8 +183,9 @@ public class CalculatorTab extends Fragment{
                     char last = inputBuf.charAt(inputBuf.length()-1);
                     if (last >= '0' && last <= '9') {
                         inputBuf = inputBuf + operator;
+                        fromResult = false;
                     }
-                    else {
+                    else if (inputBuf.length() != 1) {
                         char last2 = inputBuf.charAt(inputBuf.length()-2);
                         if (!(last2 >= '0' && last2 <= '9')) {
                             inputBuf = inputBuf.substring(0, inputBuf.length() - 2) + operator;
@@ -188,6 +211,7 @@ public class CalculatorTab extends Fragment{
 
                 if (inputBuf.equals("")) {
                     inputBuf = inputBuf + operator;
+                    fromResult = false;
                 }
                 else {
                     String c = "" + inputBuf.charAt(inputBuf.length()-1);
@@ -202,6 +226,25 @@ public class CalculatorTab extends Fragment{
                 tvInput.setText(inputBuf);
             }
         });
+
+        btnEqual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DecimalFormat df = new DecimalFormat("0");
+                df.setMaximumFractionDigits(10); //12 = DecimalFormat.DOUBLE_FRACTION_DIGITS
+                String r = "" + (df.format(result));
+
+                if (r.length() < 12) {
+                    tvInput.setText(r);
+                }
+                else {
+                    tvInput.setText(result.toString());
+                }
+
+                tvResult.setText("");
+                fromResult = true;
+            }
+        });
 //        Toast.makeText(this.getContext(), "OnStart Finish", Toast.LENGTH_LONG).show();
     }
 
@@ -211,18 +254,20 @@ public class CalculatorTab extends Fragment{
             Button btn = (Button) rootView.findViewById(v.getId());
             String value = btn.getText().toString();
             setInput(value);
+            calculate();
         }
 
     }
 
     private void setInput(String value) {
         String inputBuf = tvInput.getText().toString();
-        if (inputBuf.equals("0")) {
+        if (inputBuf.equals("0") || fromResult) {
             if (value.equals("0")) {
                 tvInput.setText("0");
             }
             else {
                 tvInput.setText(value);
+                fromResult = false;
             }
         }
         else {
@@ -230,5 +275,30 @@ public class CalculatorTab extends Fragment{
             tvInput.setText(inputBuf);
         }
 
+    }
+
+    private void calculate() {
+        String input = tvInput.getText().toString();
+        input = input.replace('×', '*');
+        input = input.replace('÷', '/');
+        input = input.replace('+', '+');
+        input = input.replace('−', '-');
+        System.out.println(input);
+
+        result = calculator.calculate(input);
+        showResult();
+    }
+
+    private void showResult() {
+        DecimalFormat df = new DecimalFormat("0");
+        df.setMaximumFractionDigits(10); //12 = DecimalFormat.DOUBLE_FRACTION_DIGITS
+        String r = "" + (df.format(result));
+
+        if (r.length() < 12) {
+            tvResult.setText(r);
+        }
+        else {
+            tvResult.setText(result.toString());
+        }
     }
 }
