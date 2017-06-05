@@ -7,22 +7,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * Created by dwiva on 5/18/17.
  */
 
 public class FinanceTab extends Fragment{
+    private View rootView;
+    private String quantity, fromUnit, toUnit;
+    private Spinner quantitySpinner;
+    private Spinner fromSpinner;
+    private Spinner toSpinner;
+
+    private TextView etJumlahPinjaman;
+    private TextView etBunga;
+    private TextView etLamaPinjaman;
+
+    private Button btnHitung;
+    private Double input, result;
+    MainActivity mainActivity;
+    private Converter converter = new Converter();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab_finance, container, false);
-        Spinner spinner = (Spinner) rootView.findViewById(R.id.bunga_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.bunga_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+
         return rootView;
     }
 }

@@ -36,11 +36,16 @@ public class ConverterTab extends Fragment{
 
     private Double input, result;
 
+    private boolean loaded = false;
+    MainActivity mainActivity;
+
     private Converter converter = new Converter();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        Toast.makeText(this.getContext(), "On Create Start", Toast.LENGTH_LONG).show();
+        MainActivity activity = (MainActivity) getActivity();
+        mainActivity = activity;
+
         rootView = inflater.inflate(R.layout.tab_converter, container, false);
         btn0 = (Button) rootView.findViewById(R.id.btn_0);
         btn1 = (Button) rootView.findViewById(R.id.btn_1);
@@ -64,6 +69,7 @@ public class ConverterTab extends Fragment{
         tvInput = (TextView) rootView.findViewById(R.id.from_unit);
         tvResult = (TextView) rootView.findViewById(R.id.to_unit);
 
+        loaded = true;
         return rootView;
     }
 
@@ -146,7 +152,6 @@ public class ConverterTab extends Fragment{
                 }
             }
         });
-//        Toast.makeText(this.getContext(), "OnStart Finish", Toast.LENGTH_LONG).show();
     }
 
     public class CustomOnClickListener extends Activity implements AdapterView.OnClickListener {
@@ -268,6 +273,7 @@ public class ConverterTab extends Fragment{
 
         result = converter.convert(quantity, input, fromUnit, toUnit);
         showResult();
+        mainActivity.saveResult(result);
     }
 
     private void showResult() {
@@ -282,6 +288,39 @@ public class ConverterTab extends Fragment{
             tvResult.setText(result.toString());
         }
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && loaded) {
+            result = mainActivity.getSavedResult();
+            if(result != 0.0) {
+                DecimalFormat df = new DecimalFormat("0");
+                df.setMaximumFractionDigits(10); //12 = DecimalFormat.DOUBLE_FRACTION_DIGITS
+                String r = "" + (df.format(result));
+
+                if (r.length() < 12) {
+                    tvInput.setText(r);
+                }
+                else {
+                    tvInput.setText(result.toString());
+                }
+
+                converting();
+            } else {
+                tvInput.setText("0");
+            }
+        }
+    }
+
+//    private void setSharedResult() {
+//        MainActivity.setResult(this.result);
+//    }
+//
+//    private void getSharedResult() {
+//
+//        System.out.println(MainActivity.getResult());
+//    }
 
 //    @Override
 //    public void onResume() {

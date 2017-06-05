@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+     public double result = 0.0;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -135,5 +136,15 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+    public void saveResult(double value) {
+        result = value;
+    }
+
+    public double getSavedResult() {
+//        Bundle data = new Bundle();
+//        data.putDouble("result", result);
+//        return data;
+        return result;
     }
 }

@@ -32,12 +32,16 @@ public class CalculatorTab extends Fragment{
     String input;
     private Double result;
     private boolean fromResult = false;
+    MainActivity mainActivity;
 
     Calculator calculator = new Calculator();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        MainActivity activity = (MainActivity) getActivity();
+        mainActivity = activity;
+
         this.rootView = inflater.inflate(R.layout.tab_calculator, container, false);
         btn0 = (Button) rootView.findViewById(R.id.btn_0);
         btn1 = (Button) rootView.findViewById(R.id.btn_1);
@@ -316,6 +320,7 @@ public class CalculatorTab extends Fragment{
 //                System.out.println(input);
 
                 result = calculator.calculate(input);
+                mainActivity.saveResult(result);
                 showResult();
             }
             else {
@@ -339,4 +344,26 @@ public class CalculatorTab extends Fragment{
             tvResult.setText(result.toString());
         }
     }
+
+    /*@Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+            result = mainActivity.getSavedResult();
+            if(result != 0.0) {
+                DecimalFormat df = new DecimalFormat("0");
+                df.setMaximumFractionDigits(10); //12 = DecimalFormat.DOUBLE_FRACTION_DIGITS
+                String r = "" + (df.format(result));
+
+                if (r.length() < 12) {
+                    tvInput.setText(r);
+                }
+                else {
+                    tvInput.setText(result.toString());
+                }
+            } else {
+                tvInput.setText("0");
+            }
+        }
+    }*/
 }
