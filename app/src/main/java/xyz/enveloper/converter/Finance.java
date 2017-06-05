@@ -5,16 +5,11 @@ package xyz.enveloper.converter;
  */
 
 public class Finance {
-    public double[] hutang(double jumlahPinjaman, int lamaPinjaman, double bunga) {
-        double[] result = new double[2];
-        double hasil;
-        double total;
+    public double hutang(double jumlahPinjaman, int lamaPinjaman, double bunga) {
+        double result;
+        bunga = bunga / 100;
 
-        hasil = (jumlahPinjaman / lamaPinjaman) + (jumlahPinjaman * bunga);
-        total = hasil * lamaPinjaman;
-
-        result[0] = hasil;
-        result[1] = total;
+        result = (jumlahPinjaman / lamaPinjaman) + (jumlahPinjaman * bunga);
 
         return result;
     }

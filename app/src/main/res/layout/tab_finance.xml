@@ -89,7 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/bulan_id"
             android:layout_marginTop="15dp"
-            android:layout_toStartOf="@+id/bulan_id" />
+            android:layout_toStartOf="@+id/bulan_id"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/hitung"
