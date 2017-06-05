@@ -7,7 +7,6 @@ package xyz.enveloper.converter;
 public class Converter {
 
     public double convert(String quantity, double in, String from, String to) {
-        System.out.println( "qty: " + quantity + " in: " + in + " from: " + from + " to: " + to);
         //String[] index = new String[]{"length", "area", "volume", "mass", "time", "temperature", "speed", "energy", "power", "pressure", "data"};
         double out = 0;
         switch(quantity) {
@@ -45,6 +44,7 @@ public class Converter {
                 out = data(in, from, to);
                 break;
         }
+        System.out.println( "qty: " + quantity + " in: " + in + " " + from + " is equal to " + out + " " + to);
         return out;
     }
 
@@ -144,7 +144,7 @@ public class Converter {
         double[][] temp = new double[][]{
                         //reamur    celsius     fhrenht     kelvin
             /*scale*/   {4,         5,          9,          5},
-            /*initial*/ {0,         0,          32,         273}
+            /*initial*/ {0,         0,          32,         273.15}
         };
 
         int i = generateIndex(index, from);
@@ -225,7 +225,7 @@ public class Converter {
     private int generateIndex(String index[], String unit) {
         int num = 0;
         for (int i = 0; i < index.length; i++) {
-            System.out.println(i + " " + index[i]);
+//            System.out.println(i + " " + index[i]);
             if (unit.equals(index[i])) {
                 num = i;
                 break;

@@ -81,7 +81,7 @@
 
             <Button
                 android:id="@+id/btn_ce"
-                style="@style/Button"
+                style="@style/Button_text"
                 android:text="CE" />
 
             <TextView
@@ -91,7 +91,7 @@
 
             <Button
                 android:id="@+id/btn_del"
-                style="@style/Button"
+                style="@style/Button_text"
                 android:text="DEL" />
         </LinearLayout>
 

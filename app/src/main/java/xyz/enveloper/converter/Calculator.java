@@ -5,11 +5,10 @@ package xyz.enveloper.converter;
  */
 
 public class Calculator {
-    double calculate(String in) {
-        String[][] expression = generateArray(in);
-        System.out.println("length= " + expression.length);
+    double calculate(String input) {
+        String[][] expression = generateArray(input);
+        // System.out.println("length= " + expression.length);
         double result = Double.parseDouble(expression[0][0]);
-        // expression.length - 1
         String operator;
         double value;
 
@@ -34,47 +33,50 @@ public class Calculator {
                     System.out.println("something went wrong");
                     break;
             }
-            System.out.println(operator + " " + value);
+            // System.out.println(operator + " " + value);
         }
 
         return result;
     }
 
-    String[][] generateArray(String in) {
-        String[][] expression = new String[100][2];
+    private String[][] generateArray(String input) {
+        //Fungsi ini telah dipindahkan ke view
+        /*for (int i = input.length()-1; i >= 0; i--) { //hapus operator di belakang angka terakhir jika ada.
+            if (isDigit(input.charAt(i))) {
+                input = input.substring(0, i+1);
+                break;
+            }
+        }*/
+
+        int index = 1;
+        for (int i = 0; i < input.length(); i++) { //menentukan ukuran array expression
+            char current = input.charAt(i);
+            if (current == '*' || current == '/' || current == '+' || (current == '-' && (i != 0) && isDigit(input.charAt(i-1))) ) {
+                index++;
+            }
+        }
+
+        String[][] expression = new String[index][2];
         int j = 0;
         int start = 0;
         int stop;
 
-        for (int i = 0; i < in.length(); i++) {
-            char current = in.charAt(i);
-
-            if (current == '*' || current == '/' || current == '+') {
+        for (int i = 0; i < input.length(); i++) {
+            char current = input.charAt(i);
+            if (current == '*' || current == '/' || current == '+' || (current == '-' && (i != 0) && isDigit(input.charAt(i-1))) ) {
                 stop = i;
-                expression[j][0] = in.substring(start, stop);
-                System.out.println(i + ".." + start + ".." + stop);
-                expression[j][1] = "" + in.charAt(i);
+                expression[j][0] = input.substring(start, stop);
+                expression[j][1] = "" + input.charAt(i);
                 start = i + 1;
                 j++;
             }
-            else if ( current == '-' && (i != 0) && isDigit(in.charAt(i-1)) ){
-                stop = i;
-                expression[j][0] = in.substring(start, stop);
-                System.out.println(i + ".." + start + ".." + stop);
-                expression[j][1] = "" + in.charAt(i);
-                start = i + 1;
-                j++;
-            }
-            else if (i == (in.length() - 1) ){
-                System.out.println("work");
+            else if (i == (input.length() - 1) ){
                 stop = i + 1;
-                expression[j][0] = in.substring(start, stop);
+                expression[j][0] = input.substring(start, stop);
             }
         }
 
-        System.out.println("generateArray finish");
-
-        return trimArray(expression);
+        return expression;
     }
 
     boolean isDigit(char c) {
@@ -84,25 +86,5 @@ public class Calculator {
         else {
             return false;
         }
-    }
-
-    String[][] trimArray(String[][] array) {
-        int index = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i][0] == null) {
-                index = i;
-                break;
-            }
-        }
-        System.out.println("index = " + index);
-
-        String[][] result = new String[index][2];
-
-        for (int i = 0; i < index; i++) {
-            result[i][0] = array[i][0];
-            result[i][1] = array[i][1];
-        }
-
-        return result;
     }
 }

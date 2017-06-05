@@ -120,10 +120,7 @@ public class CalculatorTab extends Fragment{
                         inputBuf = inputBuf.substring(0, inputBuf.length() - 1);
                         tvInput.setText(inputBuf);
                         if (!inputBuf.equals("")){
-                            if ( !(inputBuf.charAt(inputBuf.length()-1) == '−') ) {
-                                System.out.println("The Hell" + inputBuf.charAt(inputBuf.length()-1));
-                                calculate();
-                            }
+                            calculate();
                         }
                         else {
                             tvInput.setText("");
@@ -304,12 +301,19 @@ public class CalculatorTab extends Fragment{
     private void calculate() {
         String input = tvInput.getText().toString();
         if (!input.equals("")) {
+            for (int i = input.length()-1; i >= 0; i--) { //hapus operator di belakang angka terakhir jika ada.
+                if (calculator.isDigit(input.charAt(i))) {
+                    input = input.substring(0, i+1);
+                    break;
+                }
+            }
             if (!input.equals("−")) {
+//                System.out.println(input);
                 input = input.replace('×', '*');
                 input = input.replace('÷', '/');
                 input = input.replace('+', '+');
                 input = input.replace('−', '-');
-                System.out.println(input);
+//                System.out.println(input);
 
                 result = calculator.calculate(input);
                 showResult();
